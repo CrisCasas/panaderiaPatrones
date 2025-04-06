@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15.0" alignment="CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.panaderia.vista.controladoresFXML.MainMenuController"
+      style="-fx-padding: 30; -fx-background-color: #f8f8f8;">
+
+    <Label text="🧁 MENÚ PRINCIPAL 🧁" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+    
+    <Button text="1. Comprar productos" onAction="#comprarProductos"/>
+    <Button text="2. Buscar por nombre" onAction="#buscarPorNombre"/>
+    <Button text="3. Buscar por precio" onAction="#buscarPorPrecio"/>
+    <Button text="4. Productos con bajo stock" onAction="#stockBajo"/>
+    <Button text="5. Modo Administrador" onAction="#ingresarAdministrador"/>
+    <Button text="0. Salir" onAction="#salir"/>
+</VBox>

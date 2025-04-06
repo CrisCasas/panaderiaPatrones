@@ -71,7 +71,7 @@ public abstract class Producto {
     }
 
     public void reducirStock(){
-        if (cantidad>0 && cantidad<=10){
+        if (cantidad>0 && cantidad<=100){
             cantidad--;
         }else{
             System.out.println("No hay stock disponible" + this.nombre);
