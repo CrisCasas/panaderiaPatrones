@@ -9,10 +9,9 @@
 
     <Label text="🧁 MENÚ PRINCIPAL 🧁" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
     
-    <Button text="1. Comprar productos" onAction="#comprarProductos"/>
-    <Button text="2. Buscar por nombre" onAction="#buscarPorNombre"/>
-    <Button text="3. Buscar por precio" onAction="#buscarPorPrecio"/>
-    <Button text="4. Productos con bajo stock" onAction="#stockBajo"/>
-    <Button text="5. Modo Administrador" onAction="#ingresarAdministrador"/>
-    <Button text="0. Salir" onAction="#salir"/>
+    <Button text="🛒 Comprar productos" onAction="#comprarProductos"/>
+    <Button text="🔍 Buscar por nombre" onAction="#buscarPorNombre"/>
+    <Button text="💲 Buscar por precio" onAction="#buscarPorPrecio"/>
+    <Button text="🔐 Modo Administrador" onAction="#ingresarAdministrador"/>
+    <Button text="👋 Salir" onAction="#salir"/>
 </VBox>

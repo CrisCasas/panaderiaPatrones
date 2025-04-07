@@ -1,58 +1,64 @@
 package com.panaderia.vista;
 
+import com.panaderia.SistemaCache;
 import com.panaderia.controlador.ControladorInventario;
 import com.panaderia.modelo.productos.Producto;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.List;
 
-public class BuscarPorPrecioGUI extends JFrame {
-	
-    public BuscarPorPrecioGUI(ControladorInventario ctrlInventario) {
-        setTitle("Buscar Producto por Rango de Precio");
-        setSize(450, 300);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+public class BuscarPorPrecioGUI {
 
-        JPanel panel = new JPanel(new BorderLayout());
+    public BuscarPorPrecioGUI() {
+        Stage stage = new Stage();
+        stage.setTitle("💲 Buscar Producto por Rango de Precio");
 
-        JPanel inputPanel = new JPanel();
-        inputPanel.add(new JLabel("Precio mínimo:"));
-        JTextField txtMin = new JTextField(5);
-        inputPanel.add(txtMin);
+        // Campos para ingresar el rango
+        TextField campoMin = new TextField();
+        campoMin.setPromptText("Precio mínimo");
 
-        inputPanel.add(new JLabel("Precio máximo:"));
-        JTextField txtMax = new JTextField(5);
-        inputPanel.add(txtMax);
+        TextField campoMax = new TextField();
+        campoMax.setPromptText("Precio máximo");
 
-        JTextArea resultadosArea = new JTextArea();
-        resultadosArea.setEditable(false);
-        JScrollPane scroll = new JScrollPane(resultadosArea);
+        TextArea resultado = new TextArea();
+        resultado.setEditable(false);
 
-        JButton btnBuscar = new JButton("Buscar");
-        btnBuscar.addActionListener((ActionEvent e) -> {
+        Button btnBuscar = new Button("Buscar");
+
+        // Acceso al controlador desde SistemaCache
+        ControladorInventario ctrlInventario = SistemaCache.getInstance().getCtrlInventario();
+
+        btnBuscar.setOnAction(e -> {
             try {
-                double min = Double.parseDouble(txtMin.getText());
-                double max = Double.parseDouble(txtMax.getText());
-                List<Producto> encontrados = ctrlInventario.buscarProductosPorRangoPrecio(min, max);
-                if (encontrados.isEmpty()) {
-                    resultadosArea.setText("⚠️ No se encontraron productos.");
+                double min = Double.parseDouble(campoMin.getText());
+                double max = Double.parseDouble(campoMax.getText());
+
+                List<Producto> resultados = ctrlInventario.buscarProductosPorRangoPrecio(min, max);
+
+                if (resultados.isEmpty()) {
+                    resultado.setText("⚠️ No se encontraron productos.");
                 } else {
-                    StringBuilder resultado = new StringBuilder();
-                    encontrados.forEach(p -> resultado.append(p.toString()).append("\n"));
-                    resultadosArea.setText(resultado.toString());
+                    StringBuilder sb = new StringBuilder();
+                    for (Producto p : resultados) {
+                        sb.append(p.toString()).append("\n");
+                    }
+                    resultado.setText(sb.toString());
                 }
             } catch (NumberFormatException ex) {
-                resultadosArea.setText("❌ Ingrese valores numéricos válidos.");
+                resultado.setText("❌ Ingrese valores numéricos válidos.");
             }
         });
 
-        panel.add(inputPanel, BorderLayout.NORTH);
-        panel.add(scroll, BorderLayout.CENTER);
-        panel.add(btnBuscar, BorderLayout.SOUTH);
-        add(panel);
-        setVisible(true);
+        // Layout con espaciado y padding
+        VBox layout = new VBox(10, campoMin, campoMax, btnBuscar, resultado);
+        layout.setPadding(new Insets(10));
+
+        Scene scene = new Scene(layout, 400, 320);
+        stage.setScene(scene);
+        stage.show();
     }
 }

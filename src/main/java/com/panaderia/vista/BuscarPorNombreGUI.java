@@ -1,49 +1,65 @@
 package com.panaderia.vista;
 
+import com.panaderia.SistemaCache;
 import com.panaderia.controlador.ControladorInventario;
 import com.panaderia.modelo.productos.Producto;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.List;
 
-public class BuscarPorNombreGUI extends JFrame {
-	
-    public BuscarPorNombreGUI(ControladorInventario ctrlInventario) {
-        setTitle("Buscar Producto por Nombre");
-        setSize(400, 300);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
-        
-        JPanel panel = new JPanel(new BorderLayout());
+public class BuscarPorNombreGUI {
 
-        JPanel inputPanel = new JPanel();
-        inputPanel.add(new JLabel("Nombre del producto:"));
-        JTextField txtNombre = new JTextField(20);
-        inputPanel.add(txtNombre);
+    public BuscarPorNombreGUI() {
+        Stage stage = new Stage();
+        stage.setTitle("🔍 Buscar Producto por Nombre");
 
-        JTextArea resultadosArea = new JTextArea();
-        resultadosArea.setEditable(false);
-        JScrollPane scroll = new JScrollPane(resultadosArea);
+        TextField campoNombre = new TextField();
+        campoNombre.setPromptText("Ingrese nombre del producto");
 
-        JButton btnBuscar = new JButton("Buscar");
-        btnBuscar.addActionListener((ActionEvent e) -> {
-            String nombre = txtNombre.getText();
-            List<Producto> encontrados = ctrlInventario.buscarProductoPorNombre(nombre);
-            if (encontrados.isEmpty()) {
-                resultadosArea.setText("⚠️ No se encontraron productos.");
-            } else {
-                StringBuilder resultado = new StringBuilder();
-                encontrados.forEach(p -> resultado.append(p.toString()).append("\n"));
-                resultadosArea.setText(resultado.toString());
+        TextArea resultado = new TextArea();
+        resultado.setEditable(false);
+
+        Button btnBuscar = new Button("Buscar");
+
+        // Instanciar tu backend de control
+        ControladorInventario ctrlInventario = SistemaCache.getInstance().getCtrlInventario();
+
+        btnBuscar.setOnAction(e -> {
+            try {
+                String nombreBuscado = campoNombre.getText().trim();
+
+                if (nombreBuscado.isEmpty()) {
+                    resultado.setText("⚠️ El campo de nombre no puede estar vacío.");
+                    return;
+                }
+
+                List<Producto> resultados = ctrlInventario.buscarProductoPorNombre(nombreBuscado);
+
+                if (resultados.isEmpty()) {
+                    resultado.setText("⚠️ No se encontraron productos con ese nombre.");
+                } else {
+                    StringBuilder sb = new StringBuilder();
+                    for (Producto p : resultados) {
+                        sb.append(p.toString()).append("\n");
+                    }
+                    resultado.setText(sb.toString());
+                }
+
+            } catch (Exception ex) {
+                resultado.setText("❌ Ocurrió un error al buscar el producto.\nDetalles: " + ex.getMessage());
+                ex.printStackTrace(); // Opcional: para depuración en consola
             }
         });
 
-        panel.add(inputPanel, BorderLayout.NORTH);
-        panel.add(scroll, BorderLayout.CENTER);
-        panel.add(btnBuscar, BorderLayout.SOUTH);
-        add(panel);
-        setVisible(true);
+        VBox layout = new VBox(10, campoNombre, btnBuscar, resultado);
+        layout.setPadding(new Insets(10));
+
+        Scene scene = new Scene(layout, 400, 300);
+        stage.setScene(scene);
+        stage.show();
     }
 }

@@ -30,7 +30,7 @@ public class MainMenuController {
     public void buscarPorNombre(ActionEvent event) {
         System.out.println("🔍 Buscar producto por nombre");
         try {
-           // new BuscarPorNombreGUI();  // <-- abre la ventana
+           new BuscarPorNombreGUI();  // <-- abre la ventana
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -40,15 +40,10 @@ public class MainMenuController {
     public void buscarPorPrecio(ActionEvent event) {
         System.out.println("💲 Buscar producto por precio");
         try {
-          //  new BuscarPorPrecioGUI();  // <-- abre la ventana
+          new BuscarPorPrecioGUI();  // <-- abre la ventana
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @FXML
-    public void stockBajo(ActionEvent event) {
-        System.out.println("📉 Ver productos con bajo stock");
     }
 
     @FXML
