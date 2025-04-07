@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15.0" alignment="CENTER" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.panaderia.vista.controladoresFXML.AdminGUIController"
+      style="-fx-padding: 20; -fx-background-color: #f0f0f0;">
+
+    <Label text="🔐 Panel Administrador" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+    <TextArea fx:id="areaInventario" prefRowCount="10" editable="false" wrapText="true"/>
+
+    <HBox spacing="10">
+        <TextField fx:id="txtNombre" promptText="Nombre del producto"/>
+        <TextField fx:id="txtCantidad" promptText="Cantidad a agregar"/>
+        <Button text="➕ Agregar al Inventario" onAction="#agregarInventario"/>
+    </HBox>
+
+    <Button text="📄 Generar Reporte CSV" onAction="#generarReporte"/>
+</VBox>

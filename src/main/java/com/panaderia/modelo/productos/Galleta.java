@@ -36,7 +36,7 @@ public class Galleta extends Producto{
 
     @Override
     public String toString() {
-        return "Pan: " + getNombre() + 
+        return "Producto: " + getNombre() + 
             " | Precio: $" + getPrecioVenta() + 
             " | Costo: $" + getCostoProduccion() + 
             " | Cantidad: " + getCantidad() + 

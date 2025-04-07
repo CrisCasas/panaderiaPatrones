@@ -49,6 +49,17 @@ public class MainMenuController {
     @FXML
     public void ingresarAdministrador(ActionEvent event) {
         System.out.println("🔐 Modo administrador");
+        PasswordGUI.solicitarContrasena(() -> {
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/com/panaderia/vista/AdminGUI.fxml"));
+                Stage stage = new Stage();
+                stage.setTitle("🔐 Panel Administrador");
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });       
     }
 
     @FXML
