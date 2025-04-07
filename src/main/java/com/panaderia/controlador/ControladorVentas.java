@@ -71,4 +71,8 @@ public class ControladorVentas {
         .sum();
     }
     
+    // ✅ NUEVO MÉTODO: Obtener todas las ventas
+    public List<Venta> obtenerListaVentas() {
+        return sistema.getListaVentas();
+    }
 }

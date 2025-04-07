@@ -2,7 +2,10 @@ package com.panaderia.vista.controladoresFXML;
 
 import com.panaderia.SistemaCache;
 import com.panaderia.controlador.ControladorInventario;
+import com.panaderia.controlador.ControladorVentas;
 import com.panaderia.modelo.productos.Producto;
+import com.panaderia.modelo.ventas.Venta;
+import com.panaderia.util.ReporteCSV;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -11,21 +14,17 @@ import java.util.List;
 
 public class AdminGUIController {
 
-
-    @FXML
-    private TextArea areaInventario;
-
-    @FXML
-    private TextField txtNombre;
-
-    @FXML
-    private TextField txtCantidad;
+    @FXML private TextArea areaInventario;
+    @FXML private TextField txtNombre;
+    @FXML private TextField txtCantidad;
 
     private ControladorInventario ctrlInventario;
+    private ControladorVentas ctrlVentas; // 🆕 Nueva referencia
 
     @FXML
     public void initialize() {
         ctrlInventario = SistemaCache.getInstance().getCtrlInventario();
+        ctrlVentas = SistemaCache.getInstance().getCtrlVentas(); // ✅ lo obtenemos desde el cache
         mostrarInventario();
     }
 
@@ -70,7 +69,9 @@ public class AdminGUIController {
 
     @FXML
     public void generarReporte() {
-        // Lo completamos en otra fase
+        List<Venta> ventas = ctrlVentas.obtenerListaVentas(); // ✅ accedemos correctamente a las ventas
+        ReporteCSV.generar(ventas);
+        mostrarAlerta(Alert.AlertType.INFORMATION, "✅ Reporte generado", "El reporte CSV fue creado exitosamente.");
     }
 
     private void mostrarInventario() {
@@ -80,8 +81,8 @@ public class AdminGUIController {
             sb.append(p.toString()).append("\n");
         }
         areaInventario.setText(sb.toString());
-    }	
-	
+    }
+
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
         Alert alert = new Alert(tipo);
         alert.setTitle(titulo);
