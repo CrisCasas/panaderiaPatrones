@@ -1,8 +1,14 @@
 package com.panaderia.modelo.personas;
 
-public abstract class Persona {
+import java.io.Serializable;
+
+public abstract class Persona implements Serializable{
     protected String nombre;
     protected String cedula;
+
+    public Persona(){
+        
+    }
 
     public Persona(String nombre, String cedula){
         this.nombre = nombre;

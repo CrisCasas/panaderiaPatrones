@@ -2,7 +2,7 @@ package com.panaderia.modelo.productos;
 
 import java.util.List;
 
-public class Pan extends Producto{
+public class Pan extends Producto {
 
     private boolean adicionPan;
     private static final List<String> ADICIONES_VALIDAS = List.of("queso");

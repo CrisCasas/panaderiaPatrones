@@ -1,24 +1,48 @@
 package com.panaderia.modelo.personas;
 
-public class Administrador extends Persona{
+import java.io.Serializable;
 
-    private String clave;
-    
+import com.panaderia.util.Encriptador;
+
+public class Administrador implements Serializable {
+
+    private String nombre;
+    private String cedula;
+    private String claveEncriptada;
+
+    public Administrador(){
+        
+    }
+
     public Administrador(String nombre, String cedula, String clave) {
-        super(nombre, cedula);
-        this.clave = clave;
+        this.nombre = nombre;
+        this.cedula = cedula;
+        setClave(clave); // Encripta automáticamente
     }
 
-    public boolean autenticarse (String claveIngresada){
-        return clave != null && clave.equals(claveIngresada);
+    public String getNombre() {
+        return nombre;
     }
 
-    public String getClave(){
-        return clave;
+    public String getCedula() {
+        return cedula;
     }
-    
+
+    public String getClaveEncriptada() {
+        return claveEncriptada;
+    }
+
+    // Al llamar este método, la clave se encripta automáticamente
     public void setClave(String clave) {
-        this.clave = clave;
+        this.claveEncriptada = Encriptador.encriptarSHA256(clave);
     }
 
+    @Override
+    public String toString() {
+        return "Administrador{" +
+                "nombre='" + nombre + '\'' +
+                ", cedula='" + cedula + '\'' +
+                ", claveEncriptada='" + claveEncriptada + '\'' +
+                '}';
+    }
 }

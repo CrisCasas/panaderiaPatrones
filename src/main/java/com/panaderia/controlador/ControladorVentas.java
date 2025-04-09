@@ -4,6 +4,7 @@ import com.panaderia.modelo.personas.Cliente;
 import com.panaderia.modelo.productos.Producto;
 import com.panaderia.modelo.sistema.SistemaAdministracion;
 import com.panaderia.modelo.ventas.Venta;
+import com.panaderia.dao.VentaDAO; 
 
 import java.sql.Date;
 import java.util.List;
@@ -20,7 +21,6 @@ public class ControladorVentas {
 
 
     public boolean registrarVenta(Cliente cliente, List<Producto> productos) {
-        
         if (!hayStockDisponible(productos)) {
             System.out.println("Uno o más productos no tienen stock disponible.");
             return false;
@@ -31,6 +31,9 @@ public class ControladorVentas {
     
         Venta ultimaVenta = cliente.getVentasRealizadas().get(cliente.getVentasRealizadas().size() - 1);
         sistema.getListaVentas().add(ultimaVenta);
+    
+        // 🧠 Persistencia binaria
+        VentaDAO.guardarVentas(sistema.getListaVentas());
     
         return true;
     }

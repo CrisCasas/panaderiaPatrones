@@ -1,15 +1,17 @@
 package com.panaderia.modelo.productos;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Producto {
+public abstract class Producto implements Serializable {
 
     private String nombre;
     private double precioVenta;
     private double costoProduccion;
     private int cantidad;
     private List<Adicion> adiciones = new ArrayList<>();
+    private static final long serialVersionUID = 1L; 
     
     public Producto(){
         

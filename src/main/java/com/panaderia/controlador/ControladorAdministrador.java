@@ -63,4 +63,14 @@ public class ControladorAdministrador {
 
     }
 
+    // Generar reporte CSV desde una carpeta (ruta) específica
+    public void generarReporteVentasCSVDesdeRuta(String ruta) {
+        ReporteCSV.generarDesdeCarpeta(ruta);
+    }
+
+    public void generarReporteCSVDesdeArchivo(String rutaArchivo) {
+        ReporteCSV.generarDesdeArchivoEspecifico(rutaArchivo);
+    }
+    
+
 }

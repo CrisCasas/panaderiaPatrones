@@ -1,6 +1,8 @@
 package com.panaderia.modelo.productos;
 
-public abstract class Adicion {
+import java.io.Serializable;
+
+public abstract class Adicion implements Serializable {
     
     private String nombre;
     private double costo;

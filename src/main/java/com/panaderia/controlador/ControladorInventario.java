@@ -4,6 +4,7 @@ package com.panaderia.controlador;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.panaderia.dao.ProductoDAO; 
 import com.panaderia.modelo.productos.Producto;
 import com.panaderia.modelo.sistema.SistemaAdministracion;
 
@@ -20,26 +21,29 @@ public class ControladorInventario {
     //agregar Producto
     public void agregarProducto (Producto producto){
         sistema.getListaProductos().add(producto);
+        ProductoDAO.guardarProductos(sistema.getListaProductos()); // Persistencia
     }
 
     // Eliminar producto
     public boolean eliminarProducto(String nombreProducto) {
-        return sistema.getListaProductos().
-        removeIf(
+        boolean eliminado = sistema.getListaProductos().removeIf(
             p -> p.getNombre().equalsIgnoreCase(nombreProducto)
-            );
+        );
+        if (eliminado) {
+            ProductoDAO.guardarProductos(sistema.getListaProductos()); // Persistencia
+        }
+        return eliminado;
     }
 
     //Actualizar cantidad en inventario según nombreProducto
     public boolean actualizarCantidadProducto(String nombreProducto, int nuevaCantidad){
-        
         for(Producto producto: sistema.getListaProductos()){
             if(producto.getNombre().equalsIgnoreCase(nombreProducto)){
                 producto.setCantidad(nuevaCantidad);
+                ProductoDAO.guardarProductos(sistema.getListaProductos()); // Persistencia
                 return true;
             }
         }
-
         return false;
     }
 

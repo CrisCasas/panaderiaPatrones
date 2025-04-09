@@ -2,13 +2,21 @@ package com.panaderia.modelo.personas;
 
 import com.panaderia.modelo.productos.Producto;
 import com.panaderia.modelo.ventas.Venta;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 
-public class Cliente extends Persona {
+public class Cliente extends Persona implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private List<Venta> ventasRealizadas = new ArrayList<>();
+
+    public Cliente(){
+
+    }
 
     public Cliente(String nombre, String cedula) {
         super(nombre, cedula);

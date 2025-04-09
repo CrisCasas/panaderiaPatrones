@@ -2,17 +2,19 @@ package com.panaderia.modelo.ventas;
 
 import com.panaderia.modelo.personas.Cliente;
 import com.panaderia.modelo.productos.Producto;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
-public class Venta {
+public class Venta implements Serializable{
 
     private Cliente cliente;
     private Date fecha;
     private double totalVenta;
     private List<Producto> productosVendidos = new ArrayList<>();
+    private static final long serialVersionUID = 1L;
 
     public Venta(Date fecha) {
         this.fecha = fecha;

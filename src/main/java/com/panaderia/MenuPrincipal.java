@@ -1,30 +1,88 @@
 package com.panaderia;
 
+import java.io.File;
 import java.util.*;
 import com.panaderia.controlador.*;
 import com.panaderia.modelo.personas.Cliente;
+import com.panaderia.modelo.personas.Administrador;
 import com.panaderia.modelo.productos.*;
 import com.panaderia.modelo.sistema.SistemaAdministracion;
+import com.panaderia.modelo.ventas.Venta;
+import com.panaderia.dao.AdministradorDAO;
+import com.panaderia.dao.ProductoDAO;
+import com.panaderia.dao.VentaDAO;
+import com.panaderia.dao.ClienteDAO;
 
 public class MenuPrincipal {
 
     private static final String CLAVE_ADMIN = "admin123";
 
-
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        SistemaAdministracion sistema = new SistemaAdministracion();
+
+        // Cargar datos desde archivos binarios
+        List<Producto> productos = ProductoDAO.cargarProductos();
+
+        List<Cliente> clientes = ClienteDAO.cargaClientes();
+        List<Administrador> admins = AdministradorDAO.cargarAdministradores();
+        List<Venta> ventas = VentaDAO.cargarVentas();
+        
+        // Agregar productos por defecto si no se encontró nada
+        boolean productosCargadosPorDefecto = false;
+
+        if (productos.isEmpty()) {
+            System.out.println("⚠️ No hay productos disponibles en el inventario.");
+            System.out.print("¿Desea ingresar como administrador para agregar productos? (s/n): ");
+            String respuesta = sc.nextLine();
+        
+            if (respuesta.equalsIgnoreCase("s")) {
+                System.out.print("Ingrese la clave de administrador: ");
+                String clave = sc.nextLine();
+        
+                if (CLAVE_ADMIN.equals(clave)) {
+                    System.out.print("Ingrese su nombre de administrador: ");
+                    String nombreAdmin = sc.nextLine();
+                    System.out.print("Ingrese su cédula de administrador: ");
+                    String cedulaAdmin = sc.nextLine();
+                    System.out.println("👤 Bienvenido, " + nombreAdmin + " (C.C. " + cedulaAdmin + ")");
+                    
+                    // Necesitamos una instancia temporal del sistema y controladores
+                    SistemaAdministracion sistemaTemp = new SistemaAdministracion(productos, ventas, clientes, admins);
+                    ControladorInventario ctrlInvTemp = new ControladorInventario(sistemaTemp);
+                    ControladorAdministrador ctrlAdminTemp = new ControladorAdministrador(sistemaTemp);
+        
+                    menuAdministrador(sc, ctrlInvTemp, ctrlAdminTemp);
+        
+                } else {
+                    System.out.println("❌ Clave incorrecta. Se agregarán productos de muestra.");
+                    productosCargadosPorDefecto = true;
+                }
+            } else {
+                System.out.println("ℹ️ Se agregarán productos de muestra para continuar.");
+                productosCargadosPorDefecto = true;
+            }
+        
+            if (productosCargadosPorDefecto) {
+                productos.add(new Pan("Pan francés", 1500, 800, 20, false));
+                productos.add(new Pan("Pan integral", 1800, 1000, 15, false));
+                productos.add(new Galleta("Galleta de avena", 1200, 600, 30, false));
+                productos.add(new Galleta("Galleta de chocolate", 1400, 700, 25, false));
+            }
+        }
+        
+        SistemaAdministracion sistema = new SistemaAdministracion(productos, ventas, clientes, admins);
+
         ControladorVentas ctrlVentas = new ControladorVentas(sistema);
         ControladorInventario ctrlInventario = new ControladorInventario(sistema);
         ControladorAdministrador ctrlAdmin = new ControladorAdministrador(sistema);
 
-        ctrlInventario.agregarProducto(new Pan("panBase", 1000, 600, 10, false));
-        ctrlInventario.agregarProducto(new Galleta("galletaBase", 800, 400, 15, false));
-
-
         boolean salir = false;
 
         while (!salir) {
+
+            if (productosCargadosPorDefecto) {
+                System.out.println("📦 Se cargaron productos de muestra para continuar con la prueba del sistema.");
+            }
             System.out.println("\n🧁 MENÚ PRINCIPAL 🧁");
             System.out.println("1. Comprar productos");
             System.out.println("2. Buscar producto por nombre");
@@ -39,12 +97,20 @@ public class MenuPrincipal {
 
             switch (opcion) {
                 case 1:
+                    // Validar si hay productos disponibles antes de permitir la compra
+                    if (ctrlInventario.obtenerInventarioCompleto().isEmpty()) {
+                        System.out.println("🚫 No hay productos disponibles para comprar en este momento.");
+                        System.out.println("👨‍💼 Por favor, contacte a un administrador para agregar productos.");
+                        break; // Volver al menú principal
+                    }
+
                     System.out.print("Ingrese su nombre: ");
                     String nombreCliente = sc.nextLine();
                     System.out.print("Ingrese su número de cédula: ");
                     String cedulaCliente = sc.nextLine();
                     Cliente cliente = new Cliente(nombreCliente, cedulaCliente);
                     comprarProductos(cliente, ctrlVentas, ctrlInventario, sc);
+
                     break;
                 case 2:
                     System.out.print("Ingrese nombre o parte del nombre del producto: ");
@@ -88,12 +154,26 @@ public class MenuPrincipal {
             }
         }
 
-        System.out.println("¡Gracias por usar el sistema!");
+        // Guardar datos al cerrar el programa
+        ProductoDAO.guardarProductos(sistema.getListaProductos());
+        ClienteDAO.guardarClientes(sistema.getListaClientes());
+        AdministradorDAO.guardarAdministradores(sistema.getListaAdministradores());
+        VentaDAO.guardarVentas(sistema.getListaVentas());
+        
+
+        System.out.println("¡Gracias por usar el sistema! Datos guardados correctamente.");
         sc.close();
     }
 
     private static void comprarProductos(Cliente cliente, ControladorVentas ctrlVentas, ControladorInventario ctrlInventario, Scanner sc) {
         List<Producto> inventario = ctrlInventario.obtenerInventarioCompleto();
+        
+        if (inventario.isEmpty()) {
+            System.out.println("⚠️ No hay productos disponibles en el inventario en este momento.");
+            System.out.println("📞 Por favor contacte a la administración para que repongan el stock.");
+            return; // Salimos del método
+        }
+
         System.out.println("Productos disponibles:");
         for (int i = 0; i < inventario.size(); i++) {
             System.out.println((i + 1) + ". " + inventario.get(i));
@@ -169,8 +249,10 @@ public class MenuPrincipal {
                     double costoProduccion= sc.nextDouble();
                     System.out.print("Cantidad: ");
                     int cantidad = sc.nextInt();
-                    System.out.println("Adicion: ");
-                    boolean adicion = sc.nextBoolean();
+                    System.out.print("¿Desea añadir adición al producto? (s/n): ");
+                    String respuesta = sc.next().toLowerCase();
+                    boolean adicion = respuesta.equals("s");
+
 
                     Producto nuevoProducto;
                     if (tipo.equals("pan")) {
@@ -200,8 +282,28 @@ public class MenuPrincipal {
                     System.out.println(actualizado ? "✅ Cantidad actualizada." : "❌ Producto no encontrado.");
                     break;
                 case 4:
-                    ctrlAdmin.generarReporteVentasCSV();
-                    System.out.println("📄 Reporte generado como 'reporte_ventas.csv'.");
+                        File carpeta = new File("data");
+                            File[] archivosDat = carpeta.listFiles((dir, name) -> name.endsWith(".dat"));
+
+                            if (archivosDat != null && archivosDat.length > 0) {
+                                System.out.println("📂 Archivos de ventas disponibles:");
+                                for (int i = 0; i < archivosDat.length; i++) {
+                                    System.out.println((i + 1) + ". " + archivosDat[i].getName());
+                                }
+
+                                System.out.print("Seleccione el número del archivo para generar el reporte: ");
+                                int opcionArchivo = sc.nextInt();
+                                sc.nextLine(); // limpiar buffer
+
+                                if (opcionArchivo > 0 && opcionArchivo <= archivosDat.length) {
+                                    String rutaArchivoSeleccionado = archivosDat[opcionArchivo - 1].getPath();
+                                    ctrlAdmin.generarReporteCSVDesdeArchivo(rutaArchivoSeleccionado);
+                                } else {
+                                    System.out.println("❌ Opción inválida.");
+                                }
+                            } else {
+                                System.out.println("⚠️ No se encontraron archivos .dat en la carpeta.");
+                            }
                     break;
                 case 5:
                     System.out.print("Ingrese fecha inicio (yyyy-MM-dd): ");
