@@ -20,8 +20,8 @@ public class SistemaCache {
         ctrlAdmin = new ControladorAdministrador(sistema);
 
         // Productos de prueba
-        ctrlInventario.agregarProducto(new Pan("Pan", 1000, 600, 10, false));
-        ctrlInventario.agregarProducto(new Galleta("Galleta", 800, 400, 15, false));
+        ctrlInventario.agregarProducto(new Pan("Pan", 1000, 600, 10,new AdicionPan("Sin adición", 0, 0)));
+        ctrlInventario.agregarProducto(new Galleta("Galleta", 800, 400, 15, new AdicionPan("Sin adición", 0, 0)));
     }
 
     public static SistemaCache getInstance() {

@@ -2,11 +2,14 @@ package com.panaderia.modelo.sistema;
 
 import com.panaderia.modelo.productos.Producto;
 import com.panaderia.modelo.productos.Pan;
+import com.panaderia.modelo.productos.Adicion;
+import com.panaderia.modelo.productos.AdicionGalleta;
+import com.panaderia.modelo.productos.AdicionPan;
 import com.panaderia.modelo.productos.Galleta;
 import com.panaderia.modelo.ventas.Venta;
+import com.panaderia.vista.ReporteCSV;
 import com.panaderia.modelo.personas.Cliente;
 import com.panaderia.modelo.personas.Administrador;
-import com.panaderia.util.ReporteCSV;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -90,10 +93,21 @@ public class SistemaAdministracion implements FabricaProducto {
     @Override
     public Producto creaProducto(String tipo) {
         if (tipo.equalsIgnoreCase("pan")) {
-            return new Pan("Pan Genérico", 1000, 500, 10, false);
+            // Crear adición por defecto para el pan
+            Adicion adicionPorDefecto = new AdicionPan("Sin adición", 0.0, 0.0);
+            Pan pan = new Pan("Pan Genérico", 1000, 500, 10, adicionPorDefecto);
+            pan.setAdiciones(new ArrayList<>()); // Si manejas lista adicional
+            return pan;
         } else if (tipo.equalsIgnoreCase("galleta")) {
-            return new Galleta("Galleta Genérica", 800, 400, 15, false);
+            // Crear adición por defecto para la galleta
+            Adicion adicionPorDefecto = new AdicionGalleta("Sin adición", 0.0, 0.0);
+            Galleta galleta = new Galleta("Galleta Genérica", 800, 400, 15, adicionPorDefecto);
+            galleta.setAdiciones(new ArrayList<>()); // Si manejas lista adicional
+            return galleta;
         }
         return null;
     }
+
+    
+    
 }

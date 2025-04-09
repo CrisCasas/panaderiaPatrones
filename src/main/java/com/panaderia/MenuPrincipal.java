@@ -63,10 +63,16 @@ public class MenuPrincipal {
             }
         
             if (productosCargadosPorDefecto) {
-                productos.add(new Pan("Pan francés", 1500, 800, 20, false));
-                productos.add(new Pan("Pan integral", 1800, 1000, 15, false));
-                productos.add(new Galleta("Galleta de avena", 1200, 600, 30, false));
-                productos.add(new Galleta("Galleta de chocolate", 1400, 700, 25, false));
+
+                Adicion adicionQueso = new AdicionPan("Queso", 1000.0, 500.0);
+            
+                // Adiciones para las galletas
+                Adicion adicionChocolate = new AdicionGalleta("Chispas de chocolate", 900.0, 500.0);
+
+                productos.add(new Pan("Pan francés", 1500, 800, 20,adicionQueso));
+                productos.add(new Pan("Pan integral", 1800, 1000, 15,adicionQueso));
+                productos.add(new Galleta("Galleta de avena", 1200, 600, 30,adicionChocolate));
+                productos.add(new Galleta("Galleta de chocolate", 1400, 700, 25,adicionChocolate));
             }
         }
         
@@ -192,7 +198,7 @@ public class MenuPrincipal {
                 Pan pan = (Pan) base;
                 System.out.print("¿Desea añadir queso al pan? (s/n): ");
                 if (sc.nextLine().equalsIgnoreCase("s")) {
-                    Adicion queso = new AdicionPan("queso",100);
+                    Adicion queso = new AdicionPan("queso",1000.0,500.0);
                     pan.agregarAdicion(queso);
                 }
                 carrito.add(pan);
@@ -200,7 +206,7 @@ public class MenuPrincipal {
                 Galleta galleta = (Galleta) base;
                 System.out.print("¿Desea añadir chispas de chocolate a la galleta? (s/n): ");
                 if (sc.nextLine().equalsIgnoreCase("s")) {
-                    Adicion chispas = new AdicionGalleta("chispas de chocolate",500);
+                    Adicion chispas = new AdicionGalleta("chispas de chocolate",1500.0,800.0);
                     galleta.agregarAdicion(chispas);
                 }
                 carrito.add(galleta);
@@ -253,19 +259,36 @@ public class MenuPrincipal {
                     String respuesta = sc.next().toLowerCase();
                     boolean adicion = respuesta.equals("s");
 
+                    Adicion nuevaAdicion;
 
-                    Producto nuevoProducto;
-                    if (tipo.equals("pan")) {
-                        nuevoProducto = new Pan(nombre, precio, costoProduccion, cantidad,adicion);
-                    } else if (tipo.equals("galleta")) {
-                        nuevoProducto = new Galleta(nombre, precio, costoProduccion, cantidad,adicion );
-                    } else {
-                        System.out.println("❌ Tipo de producto no válido.");
-                        break;
+                    if (adicion){ 
+                        if (tipo.equals("pan")) {
+                            nuevaAdicion = new AdicionPan("Sin adición", 0, 0);
+                        } else if (tipo.equals("galleta")) {
+                            nuevaAdicion = new AdicionGalleta("Sin adición", 0, 0);
+                        } else {
+                            System.out.println("❌ Tipo de adición no válido.");
+                            break;
+                        }
+
+                        Producto nuevoProducto;
+                        if (tipo.equals("pan")) {
+                            nuevoProducto = new Pan(nombre, precio, costoProduccion, cantidad,nuevaAdicion);
+                        } else if (tipo.equals("galleta")) {
+                            nuevoProducto = new Galleta(nombre, precio, costoProduccion, cantidad,nuevaAdicion);
+                        } else {
+                            System.out.println("❌ Tipo de producto no válido.");
+                            break;
+                        }
+                        
+    
+                        ctrlInventario.agregarProducto(nuevoProducto);
+                        System.out.println("✅ Producto agregado.");
                     }
 
-                    ctrlInventario.agregarProducto(nuevoProducto);
-                    System.out.println("✅ Producto agregado.");
+
+                    
+
                     break;
                 case 2:
                     System.out.print("Nombre del producto a eliminar: ");

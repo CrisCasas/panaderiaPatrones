@@ -30,11 +30,12 @@ public class Venta implements Serializable{
 
     public void calcularTotal() {
         totalVenta = productosVendidos.stream().mapToDouble(p -> {
-            double total = p.getPrecioVenta();
-            total += p.getAdiciones().stream().mapToDouble(a -> a.getCosto()).sum();
-            return total;
+            double precioBase = p.getPrecioVenta();
+            double totalAdiciones = p.getAdiciones().stream().mapToDouble(a -> a.getCostoProduccion()).sum();
+            return precioBase + totalAdiciones;
         }).sum();
     }
+    
     
 
     public List<Producto> listarProductosVendidos() {

@@ -28,8 +28,10 @@ public abstract class Producto implements Serializable {
     }
     public void validarCantidad(){
     }
-    public void agregarAdicion(Adicion adicion){
+    
+    public boolean agregarAdicion(Adicion adicion) {
         adiciones.add(adicion);
+        return true;
     }
 
     public String getNombre(){
@@ -71,6 +73,11 @@ public abstract class Producto implements Serializable {
     public void setAdiciones(List<Adicion> adiciones){
         this.adiciones = adiciones;
     }
+
+    public boolean isTieneAdicion() {
+        return adiciones != null && !adiciones.isEmpty();
+    }
+    
 
     public void reducirStock(){
         if (cantidad>0 && cantidad<=100){
