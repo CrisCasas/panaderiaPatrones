@@ -2,6 +2,7 @@
 /home/silverblack/Documentos/Semestre_12/PatronesDiseno/javaCodigo/Panaderia/panaderiaCSD/src/main/java/com/panaderia/vista/BuscarPorPrecioGUI.java
 /home/silverblack/Documentos/Semestre_12/PatronesDiseno/javaCodigo/Panaderia/panaderiaCSD/src/main/java/com/panaderia/modelo/personas/Persona.java
 /home/silverblack/Documentos/Semestre_12/PatronesDiseno/javaCodigo/Panaderia/panaderiaCSD/src/main/java/com/panaderia/dao/ProductoDAO.java
+/home/silverblack/Documentos/Semestre_12/PatronesDiseno/javaCodigo/Panaderia/panaderiaCSD/src/main/java/com/panaderia/vista/ReporteCSV.java
 /home/silverblack/Documentos/Semestre_12/PatronesDiseno/javaCodigo/Panaderia/panaderiaCSD/src/main/java/com/panaderia/modelo/sistema/SistemaAdministracion.java
 /home/silverblack/Documentos/Semestre_12/PatronesDiseno/javaCodigo/Panaderia/panaderiaCSD/src/main/java/com/panaderia/modelo/productos/Producto.java
 /home/silverblack/Documentos/Semestre_12/PatronesDiseno/javaCodigo/Panaderia/panaderiaCSD/src/main/java/com/panaderia/modelo/ventas/Inventario.java

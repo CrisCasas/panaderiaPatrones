@@ -54,10 +54,10 @@ public class CompraProductosController {
     public void agregarAdicion() {
         Producto seleccionado = tablaProductos.getSelectionModel().getSelectedItem();
         if (seleccionado instanceof Pan) {
-            ((Pan) seleccionado).agregarAdicion(new AdicionPan("queso", 100));
+            ((Pan) seleccionado).agregarAdicion(new AdicionPan("queso", 1000,600));
             labelMensaje.setText("🧀 Queso añadido al pan.");
         } else if (seleccionado instanceof Galleta) {
-            ((Galleta) seleccionado).agregarAdicion(new AdicionGalleta("chispas de chocolate", 500));
+            ((Galleta) seleccionado).agregarAdicion(new AdicionGalleta("chispas de chocolate", 5000,1000));
             labelMensaje.setText("🍫 Chispas añadidas a la galleta.");
         } else {
             labelMensaje.setText("⚠️ El producto no admite adiciones.");
