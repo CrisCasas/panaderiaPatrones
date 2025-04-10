@@ -14,16 +14,22 @@ import com.panaderia.dao.BinarioUtil;
 
 public class ReporteCSV {
 
-    public static void generar(List<Venta> ventas) {
-        try (FileWriter writer = new FileWriter("reporte_ventas.csv")) {
-            writer.write("Cliente,Fecha,Total,Productos\n");
-            for (Venta venta : ventas) {
-                writer.write(venta.toString() + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	public static void generar(List<Venta> ventas) {
+	    File carpeta = new File("data");
+	    if (!carpeta.exists()) {
+	        carpeta.mkdir(); // crea la carpeta si no existe
+	    }
+
+	    File archivo = new File(carpeta, "reporte_ventas.csv");
+	    try (FileWriter writer = new FileWriter(archivo)) {
+	        writer.write("Cliente,Fecha,Total,Productos\n");
+	        for (Venta venta : ventas) {
+	            writer.write(venta.toString() + "\n");
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
     
 
     public static void generarDesdeCarpeta(String carpeta) {
@@ -52,17 +58,25 @@ public class ReporteCSV {
 
     public static void generarDesdeArchivoEspecifico(String rutaArchivo) {
         List<Venta> ventas = BinarioUtil.cargarLista(rutaArchivo);
-    
-        String nombreCSV = new File(rutaArchivo).getName().replace(".dat", ".csv");
-    
-        try (FileWriter writer = new FileWriter(nombreCSV)) {
+
+        // Asegurar que la carpeta 'data' exista
+        File carpeta = new File("data");
+        if (!carpeta.exists()) {
+            carpeta.mkdir(); // crear carpeta si no existe
+        }
+
+        // Crear nombre completo para guardar el archivo dentro de la carpeta 'data'
+        String nombreArchivo = new File(rutaArchivo).getName().replace(".dat", ".csv");
+        File archivoCSV = new File(carpeta, nombreArchivo);
+
+        try (FileWriter writer = new FileWriter(archivoCSV)) {
             writer.write("Cliente,Fecha,Total,Productos\n");
             for (Venta venta : ventas) {
                 writer.write(venta.toString() + "\n");
             }
-            System.out.println("✅ Reporte generado: " + nombreCSV);
+            System.out.println("✅ Reporte generado: " + archivoCSV.getAbsolutePath());
         } catch (IOException e) {
-            System.out.println("❌ Error al generar el archivo " + nombreCSV);
+            System.out.println("❌ Error al generar el archivo " + archivoCSV.getAbsolutePath());
             e.printStackTrace();
         }
     }

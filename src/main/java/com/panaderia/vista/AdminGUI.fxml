@@ -19,4 +19,16 @@
     </HBox>
 
     <Button text="📄 Generar Reporte CSV" onAction="#generarReporte"/>
+    
+    <HBox spacing="10">
+    	<ComboBox fx:id="comboArchivosDAT" promptText="Selecciona un archivo .dat" prefWidth="300"/>
+    	<Button text="🛠️ Convertir seleccionado a CSV" onAction="#convertirArchivoBinarioIndividual"/>
+	</HBox>
+    
+    
+    <HBox spacing="10">
+    	<ComboBox fx:id="comboArchivosCSV" promptText="Selecciona un archivo CSV" prefWidth="300"/>
+    	<Button text="📂 Abrir archivo" onAction="#abrirArchivoCSV"/>
+    </HBox>
+    
 </VBox>

@@ -1,5 +1,6 @@
 /target/
-data/*.dat
 .classpath
 .project
 .settings/
+*.dat
+*.csv
