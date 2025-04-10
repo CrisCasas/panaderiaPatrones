@@ -15,7 +15,8 @@
 
     <center>
         <VBox spacing="10">
-            <TableView fx:id="tablaProductos" prefHeight="200">
+            <Label text="📦 Inventario disponible:" style="-fx-font-weight: bold"/>
+            <TableView fx:id="tablaProductos" prefHeight="150">
                 <columns>
                     <TableColumn fx:id="colNombre" text="Nombre"/>
                     <TableColumn fx:id="colPrecio" text="Precio"/>
@@ -26,6 +27,18 @@
             <HBox spacing="10">
                 <Button text="➕ Añadir al carrito" onAction="#agregarAlCarrito"/>
                 <Button text="🧀 Adición (queso/chispas)" onAction="#agregarAdicion"/>
+            </HBox>
+
+            <Label text="🛍️ Carrito actual:" style="-fx-font-weight: bold"/>
+            <TableView fx:id="tablaCarrito" prefHeight="150">
+                <columns>
+                    <TableColumn fx:id="colCarritoNombre" text="Producto"/>
+                    <TableColumn fx:id="colCarritoCantidad" text="Cantidad"/>
+                </columns>
+            </TableView>
+
+            <HBox spacing="10">
+                <Button text="➖ Eliminar del carrito" onAction="#eliminarDelCarrito"/>
                 <Button text="✅ Finalizar compra" onAction="#finalizarCompra"/>
             </HBox>
         </VBox>

@@ -1,2 +1,3 @@
-Cliente Genérico,2025-04-09,1000,00,Pan
-Cliente Genérico,2025-04-09,1600,00,Pan
+Cliente,Fecha,Total,Productos
+Cliente Genérico,2025-04-10,11200,00,Pan|Pan|Pan|Pan|Galleta|Galleta|Galleta
+Cliente Genérico,2025-04-10,3800,00,Pan|Galleta|Galleta
