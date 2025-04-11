@@ -1,6 +1,9 @@
 package com.panaderia.vista.controladoresFXML;
 
 
+import java.util.List;
+
+import com.panaderia.modelo.productos.Producto;
 import com.panaderia.vista.BuscarPorNombreGUI;
 import com.panaderia.vista.BuscarPorPrecioGUI;
 
@@ -65,6 +68,13 @@ public class MainMenuController {
     @FXML
     public void salir(ActionEvent event) {
         System.out.println("👋 Saliendo...");
+        
+        // Guardar el inventario antes de cerrar
+        List<Producto> productos = com.panaderia.SistemaCache.getInstance()
+                        .getCtrlInventario().obtenerInventarioCompleto();
+        com.panaderia.dao.ProductoDAO.guardarProductos(productos);
+
         System.exit(0);
-    }	
+    }
+
 }
