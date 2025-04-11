@@ -18,6 +18,9 @@ public abstract class Producto implements Serializable {
     }
 
     public Producto(String nombre, double precioVenta, double costoProduccion, int cantidad){
+    	if (costoProduccion > precioVenta) {
+    	    throw new RuntimeException("❌ Error: el costo de producción no puede ser mayor que el precio de venta.");
+    	}
         this.nombre=nombre;
         this.precioVenta=precioVenta;
         this.costoProduccion=costoProduccion;
